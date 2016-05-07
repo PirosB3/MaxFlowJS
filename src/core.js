@@ -6,8 +6,7 @@ var NodeType = {
     NODE: "NODE"
 }
 
-
-class Vertex {
+class Edge {
     constructor(fromNode, toNode, capacity, flow) {
         this.from = fromNode;
         this.to = toNode;
@@ -28,6 +27,16 @@ class Vertex {
 
     getFlow() {
         return this.flow;
+    }
+
+    getMaxTraverseFromNode(node) {
+        if (node == this.from) {
+            return this.getCapacity() - this.getFlow();
+        } else if (node == this.to) {
+            return this.getFlow();
+        } else {
+            throw "node of the two nodes are connected";
+        }
     }
 }
 
@@ -55,4 +64,4 @@ class Node {
 
 exports.Node = Node;
 exports.NodeType = NodeType;
-exports.Vertex = Vertex;
+exports.Edge = Edge;

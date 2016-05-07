@@ -1,6 +1,6 @@
 var Node = require('../src/core.js').Node;
 var NodeType = require('../src/core.js').NodeType;
-var Vertex = require('../src/core.js').Vertex;
+var Edge = require('../src/core.js').Edge;
 
 describe('Node', () => {
     it('should be able to be a sink', () => {
@@ -14,25 +14,39 @@ describe('Node', () => {
             new Node("invalid");
         }).toThrow()
     });
+
+    //it('should be able to get candidates to traverse', () => {
+        //var n1 = new Node('a', NodeType.NODE);
+        //var n2 = new Node('b', NodeType.NODE);
+    //}
 });
 
-describe('Vertex', () => {
+describe('Edge', () => {
     it('should be able to have a capacity and a flow', () => {
         var n1 = new Node('a', NodeType.NODE);
         var n2 = new Node('b', NodeType.NODE);
-        var vertex = new Vertex(n1, n2, 5, 0);
-        expect(vertex.getCapacity()).toBe(5);
-        expect(vertex.getFlow()).toBe(0);
+        var edge = new Edge(n1, n2, 5, 0);
+        expect(edge.getCapacity()).toBe(5);
+        expect(edge.getFlow()).toBe(0);
     });
 
     it('should be able to register', () => {
         var n1 = new Node('a', NodeType.NODE);
         var n2 = new Node('b', NodeType.NODE);
-        var vertex = new Vertex(n1, n2, 5, 0);
+        var edge = new Edge(n1, n2, 5, 0);
 
-        expect(n1.getOutgoingEdges()).toEqual([vertex]);
+        expect(n1.getOutgoingEdges()).toEqual([edge]);
         expect(n1.getIncomingEdges()).toEqual([]);
         expect(n2.getOutgoingEdges()).toEqual([]);
-        expect(n2.getIncomingEdges()).toEqual([vertex]);
+        expect(n2.getIncomingEdges()).toEqual([edge]);
+    });
+
+    it('should be able to get maximum amount to traverse', () => {
+        var n1 = new Node('a', NodeType.NODE);
+        var n2 = new Node('b', NodeType.NODE);
+        var edge = new Edge(n1, n2, 5, 3);
+
+        expect(edge.getMaxTraverseFromNode(n1)).toEqual(2);
+        expect(edge.getMaxTraverseFromNode(n2)).toEqual(3);
     });
 });
