@@ -15,10 +15,23 @@ describe('Node', () => {
         }).toThrow()
     });
 
-    //it('should be able to get candidates to traverse', () => {
-        //var n1 = new Node('a', NodeType.NODE);
-        //var n2 = new Node('b', NodeType.NODE);
-    //}
+    it('should be able to get candidates to traverse', () => {
+        var tl = new Node('a', NodeType.NODE);
+        var bl = new Node('b', NodeType.NODE);
+        var tr = new Node('c', NodeType.NODE);
+        var br = new Node('d', NodeType.NODE);
+        var c = new Node('center', NodeType.NODE);
+
+        var e1 = new Edge(tl, c, 5, 2);
+        var e2 = new Edge(bl, c, 5, 0);
+        var e3 = new Edge(c, tr, 5, 0);
+        var e4 = new Edge(c, br, 5, 5);
+
+        expect(c.getPossibleCandidates()).toEqual([
+            [2, 'a', e1],
+            [5, 'c', e3]
+        ]);
+    });
 });
 
 describe('Edge', () => {

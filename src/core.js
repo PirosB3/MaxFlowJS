@@ -29,6 +29,16 @@ class Edge {
         return this.flow;
     }
 
+    getOther(node) {
+        if (node == this.to) {
+            return this.from;
+        } else if (node == this.from) {
+            return this.to;
+        } else {
+            throw "node of the two nodes are connected";
+        }
+    }
+
     getMaxTraverseFromNode(node) {
         if (node == this.from) {
             return this.getCapacity() - this.getFlow();
@@ -59,6 +69,33 @@ class Node {
 
     getIncomingEdges() {
         return this.incoming;
+    }
+
+    getPossibleCandidates() {
+        var results = [];
+        var candidates = this.getOutgoingEdges().concat(this.getIncomingEdges());
+        for (var i=0; i < candidates.length; i++) {
+            var candidate = candidates[i];
+            var maximumICanPush = candidate.getMaxTraverseFromNode(this);
+            if (maximumICanPush > 0) {
+                results.push([
+                    maximumICanPush, 
+                    candidate.getOther(this).name,
+                    candidate
+                ]);
+            }
+        }
+        results.sort((a, b) => {
+            if (a[1] < b[1]) {
+                return -1
+            } else if (a[1] > b[1]) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        return results;
     }
 }
 
