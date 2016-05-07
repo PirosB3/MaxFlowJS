@@ -39,6 +39,24 @@ class Edge {
         }
     }
 
+    pushFlowFromVertex(amount, node) {
+        if (node == this.from) {
+            var newFlow = this.flow + amount;
+            if (newFlow > this.capacity) {
+                throw "flow too big";
+            }
+            this.flow = newFlow;
+        } else if (node == this.to) {
+            var newFlow = this.flow - amount;
+            if (newFlow < 0) {
+                throw "flow too small";
+            }
+            this.flow -= amount;
+        } else {
+            throw "node of the two nodes are connected";
+        }
+    }
+
     getMaxTraverseFromNode(node) {
         if (node == this.from) {
             return this.getCapacity() - this.getFlow();

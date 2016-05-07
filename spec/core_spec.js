@@ -70,4 +70,36 @@ describe('Edge', () => {
         expect(edge.getMaxTraverseFromNode(n1)).toEqual(5);
         expect(edge.getMaxTraverseFromNode(n2)).toEqual(0);
     });
+
+    it('should be able to modify flow based on vertex', () => {
+        var n1 = new Node('a', NodeType.NODE);
+        var n2 = new Node('b', NodeType.NODE);
+        var edge = new Edge(n1, n2, 10, 3);
+
+        // I can push back max. 3 and push forward 7
+        expect(edge.getMaxTraverseFromNode(n1)).toEqual(7);
+        expect(edge.getMaxTraverseFromNode(n2)).toEqual(3);
+
+        edge.pushFlowFromVertex(3, n1);
+        expect(edge.getMaxTraverseFromNode(n1)).toEqual(4);
+        expect(edge.getMaxTraverseFromNode(n2)).toEqual(6);
+
+        edge.pushFlowFromVertex(2, n2);
+        expect(edge.getMaxTraverseFromNode(n1)).toEqual(6);
+        expect(edge.getMaxTraverseFromNode(n2)).toEqual(4);
+    });
+
+    it('should raise an exception if amount of flow to change is negative', () => {
+        var n1 = new Node('a', NodeType.NODE);
+        var n2 = new Node('b', NodeType.NODE);
+        var edge = new Edge(n1, n2, 10, 3);
+
+        expect(() => {
+            edge.pushFlowFromVertex(100, n1);
+        }).toThrow()
+
+        expect(() => {
+            edge.pushFlowFromVertex(4, n2);
+        }).toThrow()
+    });
 });
