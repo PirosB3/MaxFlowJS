@@ -44,9 +44,17 @@ describe('Edge', () => {
     it('should be able to get maximum amount to traverse', () => {
         var n1 = new Node('a', NodeType.NODE);
         var n2 = new Node('b', NodeType.NODE);
-        var edge = new Edge(n1, n2, 5, 3);
 
+        var edge = new Edge(n1, n2, 5, 3);
         expect(edge.getMaxTraverseFromNode(n1)).toEqual(2);
         expect(edge.getMaxTraverseFromNode(n2)).toEqual(3);
+
+        edge = new Edge(n1, n2, 5, 5);
+        expect(edge.getMaxTraverseFromNode(n1)).toEqual(0);
+        expect(edge.getMaxTraverseFromNode(n2)).toEqual(5);
+
+        edge = new Edge(n1, n2, 5, 0);
+        expect(edge.getMaxTraverseFromNode(n1)).toEqual(5);
+        expect(edge.getMaxTraverseFromNode(n2)).toEqual(0);
     });
 });
