@@ -1,6 +1,7 @@
 var Node = require('../src/core.js').Node;
 var NodeType = require('../src/core.js').NodeType;
 var Edge = require('../src/core.js').Edge;
+var findAugmentingPath = require('../src/core.js').findAugmentingPath;
 
 describe('Node', () => {
     it('should be able to be a sink', () => {
@@ -101,5 +102,25 @@ describe('Edge', () => {
         expect(() => {
             edge.pushFlowFromVertex(4, n2);
         }).toThrow()
+    });
+});
+
+describe('FordFulkerson', () => {
+    it('bfs', () => {
+        var start = new Node('start', NodeType.SOURCE);
+        var end = new Node('end', NodeType.SINK);
+        var middle1 = new Node('middle1', NodeType.NODE);
+        var middle2 = new Node('middle2', NodeType.NODE);
+        var middle3 = new Node('middle3', NodeType.NODE);
+
+        var frmStartToMiddle1 = new Edge(start, middle1, 5, 3);
+        var frmStartToMiddle2 = new Edge(start, middle2, 7, 5);
+        var frmStartToMiddle3 = new Edge(start, middle3, 2, 2);
+        var frmMiddle1ToEnd = new Edge(middle1, end, 20, 2);
+
+        expect(findAugmentingPath(start)).toEqual([
+            [start, frmStartToMiddle1, 2],
+            [middle1, frmMiddle1ToEnd, 18]
+        ]);
     });
 });

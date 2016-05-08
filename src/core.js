@@ -6,6 +6,57 @@ var NodeType = {
     NODE: "NODE"
 }
 
+function findAugmentingPath(startNode) {
+
+    // create a queue with 1 element
+    var queue = [{
+        currentNode: startNode,
+        seen: new Set(),
+        history: []
+    }];
+
+    while (queue.length > 0) {
+        var currentObject = queue.shift();
+
+        // if the new node is the destination, return
+        if (currentObject.currentNode.nodeType == NodeType.SINK) {
+            return currentObject.history;
+        }
+
+        // if the new node is already seen, continue
+        if (!currentObject.seen.has(currentObject.currentNode)) {
+
+            // copy the seen set and add the current vertex
+            var newSeen = new Set(currentObject.seen.entries());
+            newSeen.add(currentObject.currentNode);
+
+            // Get all connections from the node
+            var connections = currentObject.currentNode.getPossibleCandidates();
+            for (var i=0; i < connections.length; i++) {
+                var edge = connections[i][2];
+                var maxFlow = connections[i][0];
+
+                // get the outgoing node
+                var otherNode = edge.getOther(currentObject.currentNode);
+
+
+                // copy the history and add new item
+                var newHistory = currentObject.history.slice();
+                newHistory.push([
+                    currentObject.currentNode,
+                    edge, maxFlow
+                ]);
+
+                queue.push({
+                    currentNode: edge.getOther(currentObject.currentNode),
+                    seen: newSeen,
+                    history: newHistory
+                });
+            }
+        }
+    }
+}
+
 class Edge {
     constructor(fromNode, toNode, capacity, flow) {
         this.from = fromNode;
@@ -120,3 +171,4 @@ class Node {
 exports.Node = Node;
 exports.NodeType = NodeType;
 exports.Edge = Edge;
+exports.findAugmentingPath = findAugmentingPath;
