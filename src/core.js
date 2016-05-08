@@ -27,7 +27,7 @@ function findAugmentingPath(startNode) {
         if (!currentObject.seen.has(currentObject.currentNode)) {
 
             // copy the seen set and add the current vertex
-            var newSeen = new Set(currentObject.seen.entries());
+            var newSeen = new Set(currentObject.seen);
             newSeen.add(currentObject.currentNode);
 
             // Get all connections from the node

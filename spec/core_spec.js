@@ -123,4 +123,22 @@ describe('FordFulkerson', () => {
             [middle1, frmMiddle1ToEnd, 18]
         ]);
     });
+
+    it('bfs2', () => {
+        var start = new Node('a', NodeType.SOURCE);
+        var end = new Node('d', NodeType.SINK);
+        var b = new Node('b', NodeType.NODE);
+        var c = new Node('c', NodeType.NODE);
+
+        var frmStartToMiddle1 = new Edge(start, b, 5, 2);
+        var frmStartToMiddle2 = new Edge(b, end, 5, 5);
+        var frmStartToMiddle3 = new Edge(c, b, 5, 4);
+        var frmMiddle1ToEnd = new Edge(c, end, 5, 0);
+
+        expect(findAugmentingPath(start)).toEqual([
+            [start, frmStartToMiddle1, 3],
+            [b, frmStartToMiddle3, 4],
+            [c, frmMiddle1ToEnd, 5]
+        ]);
+    });
 });
