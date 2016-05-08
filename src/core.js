@@ -6,6 +6,18 @@ var NodeType = {
     NODE: "NODE"
 }
 
+function maxFlow(startNode) {
+    var totalFlow = 0;
+    while (true) {
+        var path = findAugmentingPath(startNode);
+        if (!path) {
+            return totalFlow;
+        }
+        totalFlow += pushFlow(path);
+    }
+    return totalFlow;
+}
+
 function pushFlow(augmentingPath) {
     var smallestFlowAmount = Math.min.apply(null, augmentingPath.map(el => el[2]));
     for (var i = 0; i < augmentingPath.length; i++) {
@@ -183,3 +195,4 @@ exports.NodeType = NodeType;
 exports.Edge = Edge;
 exports.findAugmentingPath = findAugmentingPath;
 exports.pushFlow = pushFlow;
+exports.maxFlow = maxFlow;
