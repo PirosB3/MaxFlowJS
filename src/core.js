@@ -6,6 +6,16 @@ var NodeType = {
     NODE: "NODE"
 }
 
+function pushFlow(augmentingPath) {
+    var smallestFlowAmount = Math.min.apply(null, augmentingPath.map(el => el[2]));
+    for (var i = 0; i < augmentingPath.length; i++) {
+        var node = augmentingPath[i][0];
+        var edge = augmentingPath[i][1];
+        edge.pushFlowFromVertex(smallestFlowAmount, node);
+    }
+    return smallestFlowAmount;
+}
+
 function findAugmentingPath(startNode) {
 
     // create a queue with 1 element
@@ -172,3 +182,4 @@ exports.Node = Node;
 exports.NodeType = NodeType;
 exports.Edge = Edge;
 exports.findAugmentingPath = findAugmentingPath;
+exports.pushFlow = pushFlow;

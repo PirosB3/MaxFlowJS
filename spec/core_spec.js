@@ -2,6 +2,7 @@ var Node = require('../src/core.js').Node;
 var NodeType = require('../src/core.js').NodeType;
 var Edge = require('../src/core.js').Edge;
 var findAugmentingPath = require('../src/core.js').findAugmentingPath;
+var pushFlow = require('../src/core.js').pushFlow;
 
 describe('Node', () => {
     it('should be able to be a sink', () => {
@@ -140,5 +141,24 @@ describe('FordFulkerson', () => {
             [b, frmStartToMiddle3, 4],
             [c, frmMiddle1ToEnd, 5]
         ]);
+    });
+
+    it('is able to update weights', () => {
+        var start = new Node('a', NodeType.SOURCE);
+        var end = new Node('d', NodeType.SINK);
+        var b = new Node('b', NodeType.NODE);
+        var c = new Node('c', NodeType.NODE);
+
+        var frmStartToMiddle1 = new Edge(start, b, 5, 2);
+        var frmStartToMiddle2 = new Edge(b, end, 5, 5);
+        var frmStartToMiddle3 = new Edge(c, b, 5, 4);
+        var frmMiddle1ToEnd = new Edge(c, end, 5, 0);
+
+        var path = findAugmentingPath(start);
+        expect(pushFlow(path)).toEqual(3);
+
+        expect(frmStartToMiddle1.getMaxTraverseFromNode(start)).toEqual(0);
+        expect(frmStartToMiddle3.getMaxTraverseFromNode(b)).toEqual(1);
+        expect(frmMiddle1ToEnd.getMaxTraverseFromNode(c)).toEqual(2);
     });
 });
